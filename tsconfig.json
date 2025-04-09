@@ -3,6 +3,17 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    // Configuración para creación de path (alias) que simplifiquen la importación de elementos.
+    "baseUrl": "./",
+    "paths": {
+      "@dashboard/*": ["./src/app/admin-dashboard/*"],
+      "@auth/*": ["./src/app/auth/*"],
+      "@products/*": ["./src/app/products/*"],
+      "@shared/*": ["./src/app/shared/*"],
+      "@store-front/*": ["./src/app/strore-front/*"],
+    },
+
+
     "outDir": "./dist/out-tsc",
     "strict": true,
     "noImplicitOverride": true,
