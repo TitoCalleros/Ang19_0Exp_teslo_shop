@@ -1,10 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
-/* Esta configuración permite definir cómo queremos que se muestre en el intellisense y la fuente primaria a usar
-   o la fuente alternativa*/
+
 @theme {
+  /* Esta configuración permite definir cómo queremos que se muestre en el intellisense y la fuente primaria a usar
+   o la fuente alternativa*/
   --font-montserrat: "Montserrat","sans-serif";
+
+  /* Configuración de una animación que pueda ser utilizada en el intelisense que permite desapareder y aparecer por 0.3 segundos.*/
+  --animate-fadeIn: fadeIn 0.3s ease-in-out;
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    },
+    100% {
+      opacity: 1;
+    }
+  }
 }
+
 /* Definición de la fuente a usar, se debe poner el mismo nombre que se puso en la sección @theme. Se debe asigar el src con la ruta donde se encuentra el archivo de la fuente. */
 @font-face {
   font-family: "Montserrat";
