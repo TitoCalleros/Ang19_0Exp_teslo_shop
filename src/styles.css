@@ -1,8 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
+/* Esta configuración permite definir cómo queremos que se muestre en el intellisense y la fuente primaria a usar
+   o la fuente alternativa*/
 @theme {
   --font-montserrat: "Montserrat","sans-serif";
 }
+/* Definición de la fuente a usar, se debe poner el mismo nombre que se puso en la sección @theme. Se debe asigar el src con la ruta donde se encuentra el archivo de la fuente. */
 @font-face {
   font-family: "Montserrat";
   src: url("/assets/fonts/montserrat-alternates/montserrat-alternates-medium.ttf")format("truetype");
