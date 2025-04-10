@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 
 import { ProductCardComponent } from '@products/components/product-card/product-card.component';
 import { ProductsService } from '@products/services/products.service';
@@ -17,6 +17,6 @@ export class HomePageComponent {
     loader: ({request}) => {
       return this.productsService.getProducts({});
     }
-  })
+  });
 
 }
