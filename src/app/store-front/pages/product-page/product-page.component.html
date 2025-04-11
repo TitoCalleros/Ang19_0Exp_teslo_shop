@@ -5,10 +5,10 @@
 }
 
 @if (productResource.hasValue()) {
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
 
     <!-- Images -->
-    <p>Imágenes</p>
+    <product-carrousel [images]="productResource.value().images"/>
 
     <div>
       <h2 class="text-2xl font-bold font-montserrat text-accent mb-4">{{ productResource.value().title }}</h2>
