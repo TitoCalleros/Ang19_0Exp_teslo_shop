@@ -1,6 +1,8 @@
 <h1 class="text-3xl font-bold font-montserrat">Todos los productos</h1>
 <h2 class="text-xl mb-5">Para todos los gustos</h2>
 
+<shared-pagination [pages]="productResource.value()?.pages ?? 0" [currentPage]="1" />
+
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-2 gap-3">
 
   <!-- Componente de la tarjeta del producto <product-card> -->
