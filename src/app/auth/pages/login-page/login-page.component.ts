@@ -1,6 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '@auth/services/auth.service';
 import { FormUtils } from '@shared/utils/form-utils';
 
 @Component({
@@ -9,6 +10,7 @@ import { FormUtils } from '@shared/utils/form-utils';
   templateUrl: './login-page.component.html',
 })
 export class LoginPageComponent {
+  authSvc = inject(AuthService);
   fb = inject(FormBuilder);
 
   formUtils = FormUtils;
@@ -33,7 +35,9 @@ export class LoginPageComponent {
 
     const {email  = '', password = ''} = this.loginForm.value;
 
-    console.log({email, password});
+    this.authSvc.login(email!, password!).subscribe(resp => {
+      console.log(resp);
+    })
 
   }
 
