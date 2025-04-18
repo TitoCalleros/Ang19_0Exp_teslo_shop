@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '@auth/services/auth.service';
 import { FormUtils } from '@shared/utils/form-utils';
 
@@ -12,6 +12,7 @@ import { FormUtils } from '@shared/utils/form-utils';
 export class LoginPageComponent {
   authSvc = inject(AuthService);
   fb = inject(FormBuilder);
+  router = inject(Router);
 
   formUtils = FormUtils;
 
@@ -25,20 +26,27 @@ export class LoginPageComponent {
 
   onSubmit() {
     if( this.loginForm.invalid) {
-      this.hasError.set(true);
-      setTimeout(() => {
-        this.hasError.set(false);
-      }, 2000);
-
+      this.setHasError();
       return;
     }
 
     const {email  = '', password = ''} = this.loginForm.value;
 
-    this.authSvc.login(email!, password!).subscribe(resp => {
-      console.log(resp);
-    })
+    this.authSvc.login(email!, password!).subscribe((isAuthenticated) => {
+      if (isAuthenticated) {
+        this.router.navigateByUrl('/');
+        return;
+      }
 
+      this.setHasError();
+    });
+  }
+
+  setHasError() {
+    this.hasError.set(true);
+      setTimeout(() => {
+        this.hasError.set(false);
+      }, 2000);
   }
 
 }
