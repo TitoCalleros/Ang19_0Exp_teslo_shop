@@ -42,19 +42,8 @@ export class AuthService {
       email,
       password
     }).pipe(
-      tap((response) => {
-        this._user.set(response.user);
-        this._token.set(response.token);
-        this._authStatus.set('authenticated');
-        localStorage.setItem('token', response.token);
-      }),
-      map( () => true),
-      catchError(( error: any) => {
-        this._user.set(null);
-        this._token.set(null);
-        this._authStatus.set('not-authenticated');
-        return of(false);
-      })
+      map((response) => this.handleSucessAuth(response)),
+      catchError(( error: any) => this.handleErrorAuth(error))
     )
   }
 
@@ -62,26 +51,43 @@ export class AuthService {
 
     const token = localStorage.getItem('token');
 
-    if (!token) return of(false);
+    if (!token) {
+      this.logout();
+      return of(false);
+    }
 
     return this.http.get<AuthResponse>(`${baseUrl}/auth/check-status`, {
       headers: {
         Authorization: `Bearer ${token}`,
       }
     }).pipe(
-      tap((response) => {
-        this._user.set(response.user);
-        this._token.set(response.token);
-        this._authStatus.set('authenticated');
-        localStorage.setItem('token', response.token);
-      }),
-      map( () => true),
-      catchError(( error: any) => {
-        this._user.set(null);
-        this._token.set(null);
-        this._authStatus.set('not-authenticated');
-        return of(false);
-      })
+      map((response) => this.handleSucessAuth(response)),
+      catchError(( error: any) => this.handleErrorAuth(error))
     )
   }
+
+
+  logout() {
+    this._user.set(null);
+    this._token.set(null);
+    this._authStatus.set('not-authenticated');
+
+    localStorage.removeItem('token');
+  }
+
+  private handleSucessAuth({ token, user }: AuthResponse) {
+    this._user.set(user);
+    this._token.set(token);
+    this._authStatus.set('authenticated');
+    localStorage.setItem('token', token);
+
+    return true;
+  }
+
+  private handleErrorAuth(error: any): Observable<boolean> {
+    this.logout();
+    return of(false);
+  }
+
+
 }
