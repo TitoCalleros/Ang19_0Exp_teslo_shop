@@ -36,6 +36,8 @@ export class AuthService {
 
   token = computed<string|null>(() => this._token());
 
+  isAdmin = computed<boolean>(() => this._user()?.roles.includes('admin') ?? false);
+
   // Función de login
   login(email: string, password: string): Observable<boolean> {
     return this.http.post<AuthResponse>(`${baseUrl}/auth/login`, {
