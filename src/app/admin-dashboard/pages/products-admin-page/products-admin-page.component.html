@@ -1,1 +1,11 @@
-<p>products-admin-page works!</p>,
+<h1 class="text-3xl font-bold">Listado de productos</h1>
+<h3 class="text-lg">Total de productos
+  <span class="text-accent">{{ productResource.value()?.count }}</span>
+</h3>
+
+<div class="divider"></div>
+
+<shared-pagination [pages]="productResource.value()?.pages ?? 0" [currentPage]="paginationService.currentPage()" />
+
+<!-- Listado de Productos -->
+<product-table [products]="productResource.value()?.products ?? []" />
