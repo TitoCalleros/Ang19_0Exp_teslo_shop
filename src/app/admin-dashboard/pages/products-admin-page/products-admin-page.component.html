@@ -7,7 +7,16 @@
 
 <div class="flex flex-row justify-between gap-2">
   <shared-pagination [pages]="productResource.value()?.pages ?? 0" [currentPage]="paginationService.currentPage()" />
+
+  <select #productSelect class="select select-bprdered select-accent w-32" (change)="productsPerPage.set(+productSelect.value)">
+    <option value="9">9</option>
+    <option value="18">18</option>
+    <option value="27">27</option>
+    <option value="45">45</option>
+  </select>
+
   <button class="btn btn-secondary">Agregar producto</button>
+
 </div>
 
 <!-- Listado de Productos -->
