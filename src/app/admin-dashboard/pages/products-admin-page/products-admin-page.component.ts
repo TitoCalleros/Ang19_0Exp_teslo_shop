@@ -21,9 +21,6 @@ export class ProductsAdminPageComponent {
   productResource = rxResource({
     request: () => ({ page: this.paginationService.currentPage() - 1, productLimit: this.productsPerPage() }),
     loader: ({request}) => {
-
-      console.log(request.productLimit);
-
       return this.productsService.getProducts({limit: request.productLimit, offset: request.page * request.productLimit});
     }
   });
