@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
+
 import { ProductTableComponent } from "@products/components/product-table/product-table.component";
 import { ProductsService } from '@products/services/products.service';
 import { PaginationComponent } from "@shared/components/pagination/pagination.component";

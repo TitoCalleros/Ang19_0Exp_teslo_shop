@@ -5,7 +5,10 @@
 
 <div class="divider"></div>
 
-<shared-pagination [pages]="productResource.value()?.pages ?? 0" [currentPage]="paginationService.currentPage()" />
+<div class="flex flex-row justify-between gap-2">
+  <shared-pagination [pages]="productResource.value()?.pages ?? 0" [currentPage]="paginationService.currentPage()" />
+  <button class="btn btn-secondary">Agregar producto</button>
+</div>
 
 <!-- Listado de Productos -->
 <product-table [products]="productResource.value()?.products ?? []" />
