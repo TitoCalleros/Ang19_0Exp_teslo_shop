@@ -80,7 +80,7 @@ export class FormUtils {
   }
 
 
-  private static processErrors(errors: ValidationErrors, errorMessage: string = ''): string | null {
+  static processErrors(errors: ValidationErrors, errorMessage: string = ''): string | null {
     for (const key of Object.keys(errors)) {
       switch (key) {
         case 'required':

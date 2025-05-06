@@ -3,10 +3,11 @@ import { Product, Size } from '@products/interfaces/product.interface';
 import { ProductCarrouselComponent } from "@products/components/product-carrousel/product-carrousel.component";
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormUtils } from '@shared/utils/form-utils';
+import { FormErrorLabelComponent } from "../../../../products/components/form-error-label/form-error-label.component";
 
 @Component({
   selector: 'product-details',
-  imports: [ProductCarrouselComponent, ReactiveFormsModule],
+  imports: [ProductCarrouselComponent, ReactiveFormsModule, FormErrorLabelComponent],
   templateUrl: './product-details.component.html',
 })
 export class ProductDetailsComponent implements OnInit {
@@ -14,6 +15,8 @@ export class ProductDetailsComponent implements OnInit {
   product = input.required<Product>();
 
   fb = inject(FormBuilder);
+
+  formUtils = FormUtils;
 
   productDetailsForm = this.fb.group({
     title: ['', [Validators.required, Validators.minLength(10)]],
@@ -56,7 +59,9 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.productDetailsForm.value);
+    const isValid = this.productDetailsForm.valid;
+
+    console.log(this.productDetailsForm.value, { isValid });
 
   }
  }
