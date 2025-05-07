@@ -61,7 +61,15 @@ export class ProductDetailsComponent implements OnInit {
   onSubmit() {
     const isValid = this.productDetailsForm.valid;
 
-    console.log(this.productDetailsForm.value, { isValid });
+    this.productDetailsForm.markAllAsTouched();
 
+    if (!isValid) return;
+
+    const formValue = this.productDetailsForm.value;
+
+    const productLike: Partial<Product> = {
+      ...(formValue as any),
+      tags: formValue.tags?.toLowerCase().split(',').map( tag => tag.trim()) ?? []
+    };
   }
  }
