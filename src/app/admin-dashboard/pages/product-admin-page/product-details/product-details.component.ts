@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Component, inject, input, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
@@ -18,6 +19,8 @@ export class ProductDetailsComponent implements OnInit {
   product = input.required<Product>();
 
   fb = inject(FormBuilder);
+  router = inject(Router);
+
   productService = inject(ProductsService);
 
   formUtils = FormUtils;
@@ -76,8 +79,18 @@ export class ProductDetailsComponent implements OnInit {
       tags: formValue.tags?.toLowerCase().split(',').map( tag => tag.trim()) ?? []
     };
 
-    this.productService.updateProduct(this.product().id, productLike).subscribe(
-      product => { console.log('Producto actualizado', product); }
-    );
+    if (this.product().id === 'new') {
+      this.productService.createProduct(productLike).subscribe(
+        product => {
+          console.log('Producto creado', product);
+          this.router.navigate(['admin/product', product.id]);
+        }
+      );
+    } else {
+      this.productService.updateProduct(this.product().id, productLike).subscribe(
+        product => { console.log('Producto actualizado', product); }
+      );
+    }
+
   }
  }

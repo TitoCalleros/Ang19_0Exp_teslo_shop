@@ -15,7 +15,7 @@
     <form-error-label [control]="productDetailsForm.get('title')!"/>
 
 
-    <input type="text" formControlName="slug" placeholder="Slug" class="input input-bordered w-full" />
+    <input type="text" formControlName="slug" placeholder="Slug" class="input input-bordered w-full" [class.border-red-500]="productDetailsForm.get('slug')?.errors ?? false"/>
     <form-error-label [control]="productDetailsForm.get('slug')!"/>
 
     <textarea
