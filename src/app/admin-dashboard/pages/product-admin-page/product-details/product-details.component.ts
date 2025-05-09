@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { Component, inject, input, OnInit } from '@angular/core';
+import { Component, inject, input, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { ProductsService } from '@products/services/products.service';
@@ -8,6 +8,7 @@ import { Product } from '@products/interfaces/product.interface';
 import { ProductCarrouselComponent } from "@products/components/product-carrousel/product-carrousel.component";
 import { FormErrorLabelComponent } from "@products/components/form-error-label/form-error-label.component";
 import { FormUtils } from '@shared/utils/form-utils';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'product-details',
@@ -24,6 +25,8 @@ export class ProductDetailsComponent implements OnInit {
   productService = inject(ProductsService);
 
   formUtils = FormUtils;
+
+  wasSaved = signal(false);
 
   productDetailsForm = this.fb.group({
     title: ['', [Validators.required, Validators.minLength(10)]],
@@ -65,7 +68,7 @@ export class ProductDetailsComponent implements OnInit {
     this.productDetailsForm.patchValue({ sizes: currentSizes });
   }
 
-  onSubmit() {
+  async onSubmit() {
     const isValid = this.productDetailsForm.valid;
 
     this.productDetailsForm.markAllAsTouched();
@@ -80,17 +83,29 @@ export class ProductDetailsComponent implements OnInit {
     };
 
     if (this.product().id === 'new') {
-      this.productService.createProduct(productLike).subscribe(
-        product => {
-          console.log('Producto creado', product);
-          this.router.navigate(['admin/product', product.id]);
-        }
+
+      const product = await firstValueFrom(
+        this.productService.createProduct(productLike)
       );
+
+      this.showMessage(true, product.id);
     } else {
-      this.productService.updateProduct(this.product().id, productLike).subscribe(
-        product => { console.log('Producto actualizado', product); }
+      await firstValueFrom(
+        this.productService.updateProduct(this.product().id, productLike)
       );
+
+      this.showMessage(false);
     }
+  }
+
+  showMessage(route:boolean, id: string = '') {
+    this.wasSaved.set(true);
+    setTimeout(() => {
+      this.wasSaved.set(false);
+      if (route) {
+        this.router.navigate(['admin/product', id]);
+      }
+    }, 3000);
 
   }
  }
