@@ -9,7 +9,7 @@ const placeholder = './assets/images/no-image.jpg';
 })
 
 export class ProductImagePipe implements PipeTransform {
-  transform(value: string | string[]): string {
+  transform(value: string | string[] | null): string {
 
     if (!value) return placeholder;
 
