@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { Component, inject, input, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, input, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { ProductsService } from '@products/services/products.service';
@@ -27,6 +27,15 @@ export class ProductDetailsComponent implements OnInit {
   formUtils = FormUtils;
 
   wasSaved = signal(false);
+
+  imageFileList: FileList | undefined = undefined;
+  tempImages = signal<string[]>([]);
+
+  imagesToCarrousel = computed(() => {
+    const currentProductImages = [...this.product().images, ...this.tempImages()];
+
+    return currentProductImages;
+  })
 
   productDetailsForm = this.fb.group({
     title: ['', [Validators.required, Validators.minLength(10)]],
@@ -106,6 +115,16 @@ export class ProductDetailsComponent implements OnInit {
         this.router.navigate(['admin/product', id]);
       }
     }, 3000);
+  }
+
+  onFilesChanged(event: Event) {
+    const fileList = (event.target as HTMLInputElement).files;
+    this.imageFileList = fileList ?? undefined;
+    this.tempImages.set([]);
+
+    const imageUrls = Array.from( fileList ?? [] ).map( file => URL.createObjectURL(file) );
+
+    this.tempImages.set(imageUrls);
 
   }
  }
